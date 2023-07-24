@@ -1,0 +1,17 @@
+pages
+ - welcome pages
+ - home pages
+ - Not Found / Error page
+components    
+ - Layout
+ - Header
+ - Footer
+ - Body
+
+utils
+
+reducer
+
+helpers
+
+styles
