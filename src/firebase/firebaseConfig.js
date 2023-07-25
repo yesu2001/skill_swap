@@ -2,15 +2,17 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getDatabase } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD9hueHu4T6hh9DGK3nbLHmUuLVZQmU84A",
-  authDomain: "skillswap-efc96.firebaseapp.com",
-  projectId: "skillswap-efc96",
-  storageBucket: "skillswap-efc96.appspot.com",
-  messagingSenderId: "5095779236",
-  appId: "1:5095779236:web:6f9cf0c944dfbdd10faf31",
-  measurementId: "G-PFJBB7WLBR",
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -18,5 +20,7 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+export const storage = getStorage(app);
+const database = getDatabase(app);
 
 export default app;

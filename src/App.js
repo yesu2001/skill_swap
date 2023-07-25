@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Route,
@@ -10,23 +9,24 @@ import {
 import { onAuthStateChanged } from "firebase/auth";
 
 // Helper functions
-import { checkLoggedInUser, logoutUser } from "./helper/auth"; // Path to your authService.js
 import firebase, { auth } from "./firebase/firebaseConfig"; // Path to your firebaseConfig.js
 
 // Components
 import Layout from "./components/Layout";
+import Groups from "./pages/Groups";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
+import Loader from "./components/Loader";
 
 export default function App() {
-  const [user, setUser] = React.useState(null);
-  const [loading, setLoading] = React.useState(true);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Listen for auth state changes (logged in or logged out)
 
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -45,7 +45,7 @@ export default function App() {
 
   if (loading) {
     // Render a loading component while we check authentication state
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
@@ -54,6 +54,7 @@ export default function App() {
         <Routes>
           <Route path="/" exact element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/groups" element={<Groups />} />
           <Route
             path="/register"
             element={

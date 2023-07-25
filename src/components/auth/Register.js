@@ -34,7 +34,7 @@ const Register = ({ setShowModal }) => {
           type="email"
           autoComplete="email"
           required
-          className="appearance-none block w-full px-3 py-2 border border-foreground rounded-md shadow-sm placeholder-foreground focus:outline-none focus:ring focus:border-blue-500"
+          className="text-black block w-full px-3 py-2 border border-foreground rounded-md shadow-sm placeholder-foreground focus:outline-none focus:ring focus:border-blue-500"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -52,7 +52,7 @@ const Register = ({ setShowModal }) => {
           type="password"
           autoComplete="current-password"
           required
-          className="appearance-none block w-full px-3 py-2 border border-foreground rounded-md shadow-sm placeholder-foreground focus:outline-none focus:ring focus:border-blue-500"
+          className="text-black block w-full px-3 py-2 border border-foreground rounded-md shadow-sm placeholder-foreground focus:outline-none focus:ring focus:border-blue-500"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

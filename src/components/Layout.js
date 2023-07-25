@@ -1,10 +1,45 @@
 // components/Layout.js
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { checkLoggedInUser, logoutUser } from "../helper/auth"; // Path to your authService.js
 import Footer from "./Footer";
+import Avatar from "@mui/material/Avatar";
+import Popover from "@mui/material/Popover";
+import Button from "@mui/material/Button";
+import { Tooltip } from "@mui/material";
+import { grey, red } from "@mui/material/colors";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import CreateGroupForm from "./popups/CreateGroupForm";
 
 const Layout = ({ children, user }) => {
+  const [openGroupModal, SetOpenGroupModal] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const dispatch = useDispatch();
+
+  const handleGroupModal = () => SetOpenGroupModal(true);
+  const handleCloseGroupModal = () => SetOpenGroupModal(false);
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutUser());
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   return (
     <div className="dark:bg-background dark:text-foreground transition-colors">
       {/* Header/Navbar */}
@@ -13,9 +48,13 @@ const Layout = ({ children, user }) => {
           <Link to="/">
             <h1 className="text-2xl font-bold text-secondary">SkillFusion</h1>
           </Link>
-          <ul className="flex space-x-4">
+          <ul className="flex items-center space-x-4">
             <li>
+              {/* <HomeRoundedIcon fontSize="24px" mr={2} /> */}
               <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/groups">Groups</Link>
             </li>
             {!user ? (
               <>
@@ -28,12 +67,58 @@ const Layout = ({ children, user }) => {
               </>
             ) : (
               <>
-                <li>
-                  <Link to="/profile">Profile</Link>
-                </li>
-                <li>
-                  <button onClick={logoutUser}>Logout</button>
-                </li>
+                <button
+                  onClick={handleGroupModal}
+                  className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  Create Group
+                </button>
+                {openGroupModal && (
+                  <CreateGroupForm
+                    onClose={handleCloseGroupModal}
+                    currentUser={user}
+                  />
+                )}
+                {/* User Profile Picture / Avatar */}
+                <div className="relative">
+                  <Avatar
+                    alt="User Avatar"
+                    src={user.profilePicture}
+                    className="cursor-pointer"
+                    onClick={handleClick}
+                    sx={{ width: 36, height: 36 }}
+                  />
+                  <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    PaperProps={{
+                      className: "bg-white dark:bg-gray-700 rounded shadow-md",
+                    }}
+                    sx={{ mt: 1 }}
+                  >
+                    <ul className="space-y-2 p-3">
+                      <li className="flex items-center justify-between text-white">
+                        <PersonRoundedIcon />
+                        <Link to="/profile" className=" block py-2">
+                          Profile
+                        </Link>
+                      </li>
+                      <li onClick={handleLogout} className="text-red-500">
+                        <LogoutRoundedIcon /> Logout
+                      </li>
+                    </ul>
+                  </Popover>
+                </div>
               </>
             )}
           </ul>
