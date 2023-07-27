@@ -12,12 +12,14 @@ import {
   updateSkill,
   deleteSkill,
 } from "../reducer/userSkillsSlice";
+import ProfileDetails from "../components/profile/ProfileDetails";
+import ProfileSkillListing from "../components/profile/ProfileSkillListing";
 
 const UserProfile = ({ user, setShowModal, showModal }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const currentUser = auth.currentUser;
-  const currentUserId = currentUser.uid;
+  const currentUserId = currentUser?.uid;
 
   const userDetails = useSelector((state) => state.userDetails.data);
   const userDetailsLoading = useSelector(
@@ -35,7 +37,7 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
     // Fetch user details on component load
     dispatch(fetchUserDetails(currentUserId));
     dispatch(fetchUserSkills(currentUserId));
-  }, [dispatch, currentUserId]);
+  }, [dispatch, currentUserId, userDetails]);
 
   const handleSaveSkill = (newSkill) => {
     // Dispatch the addNewSkill action with the new skill data
@@ -64,64 +66,27 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
     return <Navigate to="/" />;
   }
 
+  // console.log(userDetails);
+
   return (
     <div className="min-h-screen text-white px-4 py-8">
       <div className="max-w-4xl mx-auto">
         {/* User details card */}
-        <div className="bg-primary p-6 rounded-lg shadow-md flex flex-col gap-4">
-          <div className="flex justify-between items-center">
-            <h2 className="text-2xl font-bold">Basic User Details</h2>
-            <button
-              className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-500"
-              onClick={() => setShowModal(true)}
-            >
-              Update Profile
-            </button>
-          </div>
-          <div className="flex items-center gap-4">
-            <img
-              src="path_to_user_photo.jpg"
-              alt="User Profile"
-              className="w-16 h-16 rounded-full"
-            />
-            <div>
-              <p>Name: {userDetails?.name}</p>
-              <p>Email: {currentUser?.email}</p>
-              {/* Add more user details as needed */}
-            </div>
-          </div>
-        </div>
+        <ProfileDetails userDetails={userDetails} setShowModal={setShowModal} />
 
         {/* Skills listing */}
-        <div className="mt-6 bg-primary p-6 rounded-md">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">Skills Listing</h2>
-            <button
-              className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-500 mt-2"
-              onClick={handleAddSkill}
-            >
-              Add New Skill
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            {userSkills?.map((skill, index) => (
-              <div
-                key={index}
-                className="bg-background p-4 rounded-lg shadow-md"
-              >
-                <h3 className="text-lg font-bold">{skill.skillName}</h3>
-                <p>Proficiency: {skill.proficiency}</p>
-                <p>Experience: {skill.experience} years</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ProfileSkillListing
+          handleAddSkill={handleAddSkill}
+          userSkills={userSkills}
+        />
       </div>
       {/* Modal for adding new skill */}
       {isModalOpen && (
         <SkillFormPopup onClose={handleCloseModal} onSave={handleSaveSkill} />
       )}
-      {showModal && <MultiStepForm setShowModal={setShowModal} />}
+      {showModal && (
+        <MultiStepForm setShowModal={setShowModal} userDetails={userDetails} />
+      )}
     </div>
   );
 };

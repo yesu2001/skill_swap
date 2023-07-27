@@ -20,6 +20,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Loader from "./components/Loader";
+import UserProfile from "./pages/UserProfile";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -55,6 +56,7 @@ export default function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/groups" element={<Groups />} />
+          <Route path="/profile/:id" element={<UserProfile />} />
           <Route
             path="/register"
             element={

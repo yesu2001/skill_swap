@@ -1,17 +1,20 @@
 // Register.js
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { registerUser } from "../../helper/auth"; // Path to your authService.js
+import { useDispatch, useSelector } from "react-redux";
+// import { registerUser } from "../../helper/auth";
+import { registerUser } from "../../reducer/userAuthSlice"; // Path to your authService.js
 
 const Register = ({ setShowModal }) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const isLoading = useSelector((state) => state.auth.isLoading);
+  const error = useSelector((state) => state.auth.error);
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const user = await registerUser(email, password); // Replace with actual registration credentials
+      const user = await dispatch(registerUser(email, password)); // Replace with actual registration credentials
       console.log("Registered user:", user);
       setShowModal(true);
     } catch (error) {
@@ -62,9 +65,10 @@ const Register = ({ setShowModal }) => {
           type="submit"
           className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-secondary hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-500"
         >
-          Register
+          {isLoading ? "Registering..." : "Register"}
         </button>
       </div>
+      {error && <p>{error}</p>}
     </form>
   );
 };

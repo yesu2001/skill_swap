@@ -1,8 +1,7 @@
 // components/Layout.js
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { checkLoggedInUser, logoutUser } from "../helper/auth"; // Path to your authService.js
+import { Link } from "react-router-dom"; // Path to your authService.js
 import Footer from "./Footer";
 import Avatar from "@mui/material/Avatar";
 import Popover from "@mui/material/Popover";
@@ -13,6 +12,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import CreateGroupForm from "./popups/CreateGroupForm";
+import { logoutUser } from "../reducer/userAuthSlice";
 
 const Layout = ({ children, user }) => {
   const [openGroupModal, SetOpenGroupModal] = useState(false);
@@ -24,6 +24,7 @@ const Layout = ({ children, user }) => {
 
   const handleLogout = async () => {
     try {
+      console.log("logged out");
       await dispatch(logoutUser());
     } catch (error) {
       console.error("Error logging out:", error);
@@ -113,7 +114,10 @@ const Layout = ({ children, user }) => {
                           Profile
                         </Link>
                       </li>
-                      <li onClick={handleLogout} className="text-red-500">
+                      <li
+                        onClick={handleLogout}
+                        className="text-red-500 cursor-pointer"
+                      >
                         <LogoutRoundedIcon /> Logout
                       </li>
                     </ul>

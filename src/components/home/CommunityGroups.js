@@ -20,12 +20,12 @@ function CommunityGroups() {
   }, [dispatch]);
 
   // Helper function to check if the user is a member of the group
-  const isUserMember = (group) => group.members.includes(user.uid);
+  const isUserMember = (group) => group.members.includes(user?.uid);
 
   // Function to handle joining a group
   const handleJoinGroup = (groupId) => {
     // Dispatch the joinGroup action to add the user to the group
-    dispatch(joinGroup({ groupId, userId: user.uid }));
+    dispatch(joinGroup({ groupId, userId: user?.uid }));
   };
 
   const handleViewGroup = (groupId) => {

@@ -2,28 +2,17 @@
 
 import React from "react";
 
-// "id": "user_id_123",
-//   "name": "John Doe",
-//   "email": "john@example.com",
-//   "password": "hashed_password_here",
-//   "location": "New York, USA",
-//   "bio": "I'm a software developer with a passion for web development.",
-//   "profile_picture": "https://example.com/profile/john_doe.jpg",
-//   "skills": ["web_dev", "data_science"],
-//   "preferences": {
-//     "receive_email_notifications": true,
-//     "receive_push_notifications": false
-//   },
-//   "reviews_received": ["review_id_1", "review_id_2"],
-//   "ratings": {
-//     "average_rating": 4.5,
-//     "total_ratings": 10
-//   }
-
-const StepOne = ({ formData, handleChange }) => {
+const StepOne = ({ formData, handleChange, handleProfilePhotoChange }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">Step 1: Name</h2>
+      <input
+        type="file"
+        accept="image/*"
+        value={formData.photo}
+        onChange={(e) => handleProfilePhotoChange(e.target.files[0])}
+        className="block w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-blue-500 mb-4"
+      />
       <input
         type="text"
         name="name"
