@@ -2,13 +2,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom"; // Path to your authService.js
-import Footer from "./Footer";
 import Avatar from "@mui/material/Avatar";
 import Popover from "@mui/material/Popover";
 import Button from "@mui/material/Button";
-import { Tooltip } from "@mui/material";
-import { grey, red } from "@mui/material/colors";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import CreateGroupForm from "./popups/CreateGroupForm";
@@ -45,7 +42,7 @@ const Layout = ({ children, user }) => {
     <div className="dark:bg-background dark:text-foreground transition-colors">
       {/* Header/Navbar */}
       <header className=" shadow-md">
-        <nav className="flex justify-between items-center mb-8 p-4 bg-primary">
+        <nav className="flex justify-between items-center p-4 bg-primary">
           <Link to="/">
             <h1 className="text-2xl font-bold text-secondary">SkillFusion</h1>
           </Link>
@@ -80,6 +77,9 @@ const Layout = ({ children, user }) => {
                     currentUser={user}
                   />
                 )}
+                <div className="relative">
+                  <NotificationsIcon />
+                </div>
                 {/* User Profile Picture / Avatar */}
                 <div className="relative">
                   <Avatar
@@ -133,7 +133,7 @@ const Layout = ({ children, user }) => {
       <main className="flex-1">{children}</main>
 
       {/* Footer */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

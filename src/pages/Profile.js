@@ -14,43 +14,57 @@ import {
 } from "../reducer/userSkillsSlice";
 import ProfileDetails from "../components/profile/ProfileDetails";
 import ProfileSkillListing from "../components/profile/ProfileSkillListing";
+import ProfileGroups from "../components/profile/ProfileGroups";
+import ProfileNotifies from "../components/profile/ProfileNotifies";
+import generateCustomID from "../helper/generateCustomId";
 
 const UserProfile = ({ user, setShowModal, showModal }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const currentUser = auth.currentUser;
   const currentUserId = currentUser?.uid;
+  const [skillId, setSkillId] = useState("");
 
   const userDetails = useSelector((state) => state.userDetails.data);
-  const userDetailsLoading = useSelector(
-    (state) => state.userDetails.isLoading
-  );
-  const userDetailsError = useSelector((state) => state.userDetails.error);
-
-  // Fetch user skills from Redux store
   const userSkills = useSelector((state) => state.userSkills.data);
-  const userSkillsLoading = useSelector((state) => state.userSkills.isLoading);
-  const userSkillsError = useSelector((state) => state.userSkills.error);
 
+  const [isEdit, setIsEdit] = useState(false);
+  const filteresSkill = userSkills.filter(
+    (skill) => skill.skill_id === skillId
+  );
   console.log();
   useEffect(() => {
-    // Fetch user details on component load
     dispatch(fetchUserDetails(currentUserId));
     dispatch(fetchUserSkills(currentUserId));
   }, [dispatch, currentUserId, userDetails]);
 
   const handleSaveSkill = (newSkill) => {
-    // Dispatch the addNewSkill action with the new skill data
-    dispatch(addNewSkill({ userId: currentUserId, newSkill }));
+    const uid = generateCustomID();
+    const skillData = {
+      ...newSkill,
+      skill_id: uid,
+      rating: 0,
+      reiews: [],
+      user_id: currentUserId,
+      user_name: userDetails.name,
+      members_requested: [],
+    };
+    dispatch(addNewSkill({ userId: currentUserId, newSkill: skillData }));
   };
 
-  const handleUpdateSkill = (updatedSkill) => {
+  const handleUpdateSkill = (skill) => {
+    dispatch(updateSkill({ userId: currentUserId, skillId, skill }));
+  };
+
+  const handleEditSkill = (skillId) => {
+    setIsEdit(true);
+    setIsModalOpen(true);
+    setSkillId(skillId);
+    // console.log(updatedSkill);
     // Dispatch the updateSkill action with the updated skill data
-    dispatch(updateSkill({ userId: currentUserId, updatedSkill }));
   };
 
   const handleDeleteSkill = (skillId) => {
-    // Dispatch the deleteSkill action with the skill ID to delete
     dispatch(deleteSkill({ userId: currentUserId, skillId }));
   };
 
@@ -60,6 +74,7 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    setIsEdit(false);
   };
 
   if (!user) {
@@ -71,18 +86,23 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
   return (
     <div className="min-h-screen text-white px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        {/* User details card */}
+        <ProfileNotifies />
         <ProfileDetails userDetails={userDetails} setShowModal={setShowModal} />
-
-        {/* Skills listing */}
         <ProfileSkillListing
           handleAddSkill={handleAddSkill}
           userSkills={userSkills}
+          handleEditSkill={handleEditSkill}
         />
+        <ProfileGroups />
       </div>
-      {/* Modal for adding new skill */}
       {isModalOpen && (
-        <SkillFormPopup onClose={handleCloseModal} onSave={handleSaveSkill} />
+        <SkillFormPopup
+          onClose={handleCloseModal}
+          onSave={handleSaveSkill}
+          onUpdate={handleUpdateSkill}
+          isEdit={isEdit}
+          skill={filteresSkill}
+        />
       )}
       {showModal && (
         <MultiStepForm setShowModal={setShowModal} userDetails={userDetails} />
@@ -92,19 +112,3 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
 };
 
 export default UserProfile;
-
-// return (
-//   <div>
-//     <button onClick={() => setShowModal(true)}>Update Profile</button>
-//     <h2>User Profile</h2>
-//     <p>Name: {user.displayName ? user.displayName : "User"}</p>
-//     <p>Email: {user.email}</p>
-//     <p>Email Verified: {user.emailVerified ? "Yes" : "No"}</p>
-//     {/* Display other profile information like bio, location, etc. */}
-//     {showModal && (
-//       <div className="modal active">
-//         <MultiStepForm setShowModal={setShowModal} />
-//       </div>
-//     )}
-//   </div>
-// );

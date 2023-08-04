@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createGroup } from "../../reducer/communityGroupsSlice";
+import generateCustomId from "../../helper/generateCustomId";
+import { createMessage } from "../../reducer/groupMessagesSlice";
 
 function CreateGroupForm({ onClose, currentUser }) {
   const [groupName, setGroupName] = useState("");
@@ -10,6 +12,7 @@ function CreateGroupForm({ onClose, currentUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const groupData = {
+      group_id: generateCustomId(),
       createdByuser: currentUser.name || currentUser.email,
       userId: currentUser.uid,
       members: [currentUser.uid],
@@ -20,7 +23,6 @@ function CreateGroupForm({ onClose, currentUser }) {
     };
     try {
       await dispatch(createGroup(groupData));
-      console.log("Successfully created group!");
     } catch (err) {
       console.log(err);
     }

@@ -17,3 +17,11 @@
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }
+
+body {
+  scroll-behavior: smooth;
+}
+/* 
+body::-webkit-scrollbar {
+  display: none;
+} */

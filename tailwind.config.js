@@ -21,12 +21,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#111827", // Dark gray primary color
-        secondary: "#3B82F6", // Blue secondary color
-        background: "#1F2937", // Dark blue background color
-        foreground: "#E5E7EB", // Light gray foreground color
-        accent: "#10B981", // Green accent color
-        error: "#EF4444", // Red error color
+        primary: "#171717", // Dark gray primary color
+        secondary: "#5C74DA", // Blue secondary color
+        background: "#222222", // Dark background color
+        foreground: "#C5C5CD", // Light gray foreground color
+        accent: "#7890DF", // Light blue accent color
+        error: "#4C5454", // Grayish-green error color
       },
       fontFamily: {
         sans: ["Roboto", "sans-serif"], // Change the default font family to Roboto
@@ -39,3 +39,11 @@ module.exports = {
   variants: {},
   plugins: [],
 };
+
+// color pallete 1
+// primary: "#171717", // Dark gray primary color
+//         secondary: "#5C74DA", // Blue secondary color
+//         background: "#222222", // Dark background color
+//         foreground: "#C5C5CD", // Light gray foreground color
+//         accent: "#7890DF", // Light blue accent color
+//         error: "#4C5454", // Grayish-green error color

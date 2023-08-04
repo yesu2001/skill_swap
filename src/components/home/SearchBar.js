@@ -21,10 +21,6 @@ function SearchBar() {
       const userProfilesRef = collection(db, "user_profiles");
       const userSkillsRef = collection(db, "user_skills");
 
-      // console.log(userProfilesRef);
-
-      console.log(searchKeyword);
-
       // Perform two separate queries for user profiles and user skills
       const userProfileQuery = query(
         userProfilesRef,
@@ -63,8 +59,7 @@ function SearchBar() {
 
   return (
     <section className="mb-10">
-      <h2 className="text-3xl font-bold mb-4">Search for Skills or Users</h2>
-      <div className="bg-background p-4 rounded-lg shadow-md flex items-center">
+      <div className="bg-primary p-4 rounded-lg shadow-md flex items-center">
         <input
           type="text"
           placeholder="Search for skills or users..."
@@ -80,10 +75,10 @@ function SearchBar() {
         </button>
       </div>
       <div className="mt-4">
-        {searchUserResults?.length > 0 ? (
+        {searchUserResults?.length > 0 && (
           <div>
             {searchUserResults?.map((result, index) => (
-              <div className="bg-background p-4 rounded-lg shadow-md flex items-center justify-between">
+              <div className="bg-background p-4 m-2 rounded-lg shadow-md flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   <img
                     src={result.photo}
@@ -112,10 +107,11 @@ function SearchBar() {
               </div>
             ))}
           </div>
-        ) : (
-          <p>No results found.</p>
         )}
       </div>
+      {searchKeyword.length > 0 && !searchUserResults?.length > 0 && (
+        <p>No results found.</p>
+      )}
     </section>
   );
 }

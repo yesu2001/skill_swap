@@ -25,9 +25,8 @@ export const fetchGroups = createAsyncThunk("groups/fetchGroups", async () => {
 export const createGroup = createAsyncThunk(
   "groups/createGroup",
   async (groupData) => {
-    const docRef = await addDoc(collection(db, "community_groups"), groupData);
-    console.log(docRef);
-    return { id: docRef.id, ...groupData };
+    await addDoc(collection(db, "community_groups"), groupData);
+    return groupData;
   }
 );
 
@@ -37,6 +36,32 @@ export const joinGroup = createAsyncThunk(
   async ({ groupId, userId }) => {
     const groupRef = doc(db, "community_groups", groupId);
     await setDoc(groupRef, { members: arrayUnion(userId) }, { merge: true });
+    return groupId;
+  }
+);
+
+// Async thunk to fetch user groups from Firestore
+export const fetchUserGroups = createAsyncThunk(
+  "groups/fetchUserGroups",
+  async (userId) => {
+    const groupsRef = collection(db, "community_groups");
+    const querySnapshot = await getDocs(groupsRef);
+    const groups = querySnapshot.docs.map((doc) => doc.data());
+    const userGroups = [];
+    groups.map((group) => {
+      if (group.members.includes(userId)) {
+        userGroups.push({ ...group });
+      }
+    });
+    return userGroups;
+  }
+);
+
+// Async thunk to delete a group from Firestore
+export const deleteGroup = createAsyncThunk(
+  "groups/deleteGroup",
+  async (groupId) => {
+    await db.collection("groups").doc(groupId).delete();
     return groupId;
   }
 );
@@ -60,6 +85,13 @@ const communityGroupsSlice = createSlice({
       })
       .addCase(createGroup.fulfilled, (state, action) => {
         state.data.push(action.payload);
+      })
+      .addCase(fetchUserGroups.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.status = "fulfilled";
+      })
+      .addCase(deleteGroup.fulfilled, (state, action) => {
+        state.data = action.payload;
       });
   },
 });

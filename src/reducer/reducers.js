@@ -4,13 +4,19 @@ import userDetailsReducer from "./userDetailsSlice";
 import userSkillsReducer from "./userSkillsSlice";
 import reviewsReducer from "./reviewsSlice";
 import communityGroupsReducer from "./communityGroupsSlice";
+import allSkillsReducer from "./AllskillsSlice";
+import groupMessagesReducer from "./groupMessagesSlice";
+import notificationsReducer from "./notificationsSlice";
 
 const rootReducer = combineReducers({
   auth: userAuthReducer,
+  allSkills: allSkillsReducer,
   userDetails: userDetailsReducer,
   userSkills: userSkillsReducer,
   reviews: reviewsReducer,
   groups: communityGroupsReducer,
+  groupMessages: groupMessagesReducer,
+  notifications: notificationsReducer,
 });
 
 export default rootReducer;

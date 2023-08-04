@@ -75,7 +75,7 @@ const Testimonials = () => {
   return (
     <section className="mb-10">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-3xl font-bold mb-4">User Feedback</h2>
+        <h2 className="text-2xl font-bold mb-4">User Feedback</h2>
         {/* Add Review button (visible only if the user is logged in) */}
         {auth.currentUser && (
           <button
@@ -89,7 +89,7 @@ const Testimonials = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Display reviews from Redux store */}
         {reviews?.map((review, index) => (
-          <div key={index} className="bg-background p-4 rounded-lg shadow-md">
+          <div key={index} className="bg-primary p-4 rounded-lg shadow-md">
             <h3 className="text-lg font-bold mb-2">{review?.name}</h3>
             <p className="text-foreground">{review?.review}</p>
             {/* Display the star rating */}

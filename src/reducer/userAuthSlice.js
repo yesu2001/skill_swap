@@ -1,10 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
+
+export const fetchCurrentUser = createAsyncThunk(
+  "auth/getCurrentUser",
+  async () => {
+    const currentUser = auth.currentUser;
+    const currentUserData = {
+      name: currentUser.displayName,
+      uid: currentUser.uid,
+      email: currentUser.email,
+      photoURL: currentUser.photoURL,
+    };
+    return currentUserData;
+  }
+);
 
 const initialState = {
   user: null,
@@ -37,6 +51,23 @@ const authSlice = createSlice({
       state.error = null;
       state.isAuthenticated = false;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCurrentUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCurrentUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isAuthenticated = !!action.payload;
+        state.error = null;
+      })
+      .addCase(fetchCurrentUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
   },
 });
 

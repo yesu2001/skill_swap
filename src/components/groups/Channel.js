@@ -1,16 +1,17 @@
 import React from "react";
 import Message from "./Message";
+import { chatMessages } from "./styles";
 
-function Channel({ group }) {
-  const messages = group.messages;
-
+function Channel({ group, messages }) {
+  // console.log(messages);
   return (
-    <div className="mb-4">
-      <h4 className="text-md font-bold mb-2">{group.name}</h4>
-      {/* Display the list of messages in the channel */}
-      <div>
-        {messages.map((message) => (
-          <Message key={message.id} message={message} />
+    <div className="flex flex-col" style={chatMessages}>
+      {/* Header */}
+      <h4 className="text-md font-bold mb-2 p-4">{group?.name}</h4>
+      {/* Messages */}
+      <div className="flex-1 p-4 w-full">
+        {messages?.map((message, index) => (
+          <Message message={message} key={index} />
         ))}
       </div>
     </div>

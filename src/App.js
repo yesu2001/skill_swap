@@ -21,6 +21,7 @@ import Profile from "./pages/Profile";
 import About from "./pages/About";
 import Loader from "./components/Loader";
 import UserProfile from "./pages/UserProfile";
+import AllSkills from "./pages/AllSkills";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -57,6 +58,7 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/profile/:id" element={<UserProfile />} />
+          <Route path="/all_skills" element={<AllSkills />} />
           <Route
             path="/register"
             element={

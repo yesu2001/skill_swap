@@ -7,7 +7,7 @@ import Testimonials from "../components/home/Testimonials";
 
 function Home() {
   return (
-    <div className="bg-primary min-h-screen text-white px-4 py-8">
+    <div className="bg-background min-h-screen text-white px-4 py-8">
       <div className="max-w-4xl mx-auto">
         {/* Search for skill or users section */}
         <SearchBar />

@@ -3,11 +3,11 @@ import React from "react";
 function UserCategories() {
   return (
     <section className="mb-10">
-      <h2 className="text-3xl font-bold mb-4">Users with Similar Interests</h2>
+      <h2 className="text-2xl font-bold mb-4">Users with Similar Interests</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Replace the following with your list of users */}
         {dummyUsers.map((user) => (
-          <div key={user.id} className="bg-background p-4 rounded-lg shadow-md">
+          <div key={user.id} className="bg-primary p-4 rounded-lg shadow-md">
             <img
               src={user.profilePicture}
               alt={user.name}

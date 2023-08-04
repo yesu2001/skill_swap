@@ -1,6 +1,6 @@
 import React from "react";
 
-function ProfileSkillListing({ handleAddSkill, userSkills }) {
+function ProfileSkillListing({ handleAddSkill, userSkills, handleEditSkill }) {
   return (
     <div className="mt-6 bg-primary p-6 rounded-md">
       <div className="flex items-center justify-between mb-6">
@@ -15,7 +15,15 @@ function ProfileSkillListing({ handleAddSkill, userSkills }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         {userSkills?.map((skill, index) => (
           <div key={index} className="bg-background p-4 rounded-lg shadow-md">
-            <h3 className="text-lg font-bold">{skill.skillName}</h3>
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-lg font-bold">{skill.skillName}</h3>
+              <button
+                className="text-green-400 hover:text-opacity-80"
+                onClick={() => handleEditSkill(skill.skill_id)} // Replace handleEditSkill with your edit function
+              >
+                Edit
+              </button>
+            </div>
             <p>Proficiency: {skill.proficiency}</p>
             <p>Experience: {skill.experience} years</p>
           </div>
