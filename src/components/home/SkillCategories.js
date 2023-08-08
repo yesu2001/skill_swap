@@ -36,7 +36,7 @@ function SkillCategories() {
   return (
     <section className="mb-10">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold mb-4">Recommended Skills </h2>
+        <h2 className="text-2xl font-bold mb-4">Recommended Skill Offers </h2>
         <Link to="/all_skills" className="text-blue-500 hover:underline">
           <h2 className="text mb-4">Show more</h2>
         </Link>

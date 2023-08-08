@@ -10,8 +10,9 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import CreateGroupForm from "./popups/CreateGroupForm";
 import { logoutUser } from "../reducer/userAuthSlice";
+import defaultPic from "../assets/default_pic.jpg";
 
-const Layout = ({ children, user }) => {
+const Layout = ({ children, user, profile }) => {
   const [openGroupModal, SetOpenGroupModal] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const dispatch = useDispatch();
@@ -84,7 +85,7 @@ const Layout = ({ children, user }) => {
                 <div className="relative">
                   <Avatar
                     alt="User Avatar"
-                    src={user.profilePicture}
+                    src={profile?.photo || defaultPic}
                     className="cursor-pointer"
                     onClick={handleClick}
                     sx={{ width: 36, height: 36 }}

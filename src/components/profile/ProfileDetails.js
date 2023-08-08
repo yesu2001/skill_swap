@@ -1,4 +1,5 @@
 import React from "react";
+import defaultPic from "../../assets/default_pic.jpg";
 
 function ProfileDetails({ setShowModal, userDetails }) {
   return (
@@ -14,7 +15,7 @@ function ProfileDetails({ setShowModal, userDetails }) {
       </div>
       <div className="flex items-center gap-8">
         <img
-          src={userDetails?.photo}
+          src={userDetails?.photo || defaultPic}
           alt={userDetails?.photo}
           className="w-36 h-36 rounded-full"
         />

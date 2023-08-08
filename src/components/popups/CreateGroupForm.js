@@ -1,32 +1,56 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createGroup } from "../../reducer/communityGroupsSlice";
+import { createGroup, updateGroup } from "../../reducer/communityGroupsSlice";
 import generateCustomId from "../../helper/generateCustomId";
 import { createMessage } from "../../reducer/groupMessagesSlice";
 
-function CreateGroupForm({ onClose, currentUser }) {
-  const [groupName, setGroupName] = useState("");
-  const [groupDescription, setGroupDescription] = useState("");
+function CreateGroupForm({ onClose, currentUser, edit, close, group }) {
+  const group_name = group?.name;
+  const group_desc = group?.description;
+  const [groupName, setGroupName] = useState(edit ? group_name : "");
+  const [groupDescription, setGroupDescription] = useState(
+    edit ? group_desc : ""
+  );
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const groupData = {
-      group_id: generateCustomId(),
-      createdByuser: currentUser.name || currentUser.email,
-      userId: currentUser.uid,
-      members: [currentUser.uid],
-      admin: [currentUser.uid],
-      name: groupName,
-      description: groupDescription,
-      cover_image: "",
-    };
-    try {
-      await dispatch(createGroup(groupData));
-    } catch (err) {
-      console.log(err);
+    if (edit) {
+      console.log(groupName, groupDescription);
+      try {
+        await dispatch(
+          updateGroup({ groupId: group.group_id, groupName, groupDescription })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+      close();
+    } else {
+      const groupData = {
+        group_id: generateCustomId(),
+        createdByuser: currentUser.name || currentUser.email,
+        userId: currentUser.uid,
+        members: [currentUser.uid],
+        admin: [currentUser.uid],
+        name: groupName,
+        description: groupDescription,
+        cover_image: "",
+      };
+      try {
+        await dispatch(createGroup(groupData));
+      } catch (err) {
+        console.log(err);
+      }
+      onClose();
     }
-    onClose();
+  };
+
+  const handleClose = () => {
+    if (edit) {
+      close();
+    } else {
+      onClose();
+    }
   };
 
   return (
@@ -66,7 +90,7 @@ function CreateGroupForm({ onClose, currentUser }) {
             <button
               type="button"
               className=" bg-primary text-white px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-500"
-              onClick={onClose}
+              onClick={handleClose}
             >
               Cancel
             </button>
@@ -74,7 +98,7 @@ function CreateGroupForm({ onClose, currentUser }) {
               type="submit"
               className="ml-2 bg-secondary text-white px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-500"
             >
-              Create Group
+              {edit ? "Update" : "Create Group"}
             </button>
           </div>
         </form>

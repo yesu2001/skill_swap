@@ -7,6 +7,7 @@ import {
   deleteGroup,
 } from "../../reducer/communityGroupsSlice";
 import { auth } from "../../firebase/firebaseConfig";
+import CreateGroupForm from "../popups/CreateGroupForm";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { green, red } from "@mui/material/colors";
@@ -16,7 +17,10 @@ const ProfileGroups = () => {
   const userGroups = useSelector((state) => state.groups.data);
   const dispatch = useDispatch();
   const [groupMenuStates, setGroupMenuStates] = useState({});
+  const [edit, setEdit] = useState(false);
+  const [toEditData, setToEditData] = useState({});
   // Function to open/close the menu for a specific group
+  const handleCloseEditGroupForm = () => setEdit(false);
   const handleToggleMenu = (group) => {
     setGroupMenuStates((prevState) => ({
       ...prevState,
@@ -24,16 +28,22 @@ const ProfileGroups = () => {
     }));
   };
 
+  // console.log(userGroups);
+
   useEffect(() => {
     dispatch(fetchUserGroups(currentUser.uid));
-  }, [dispatch, currentUser]);
+  }, [dispatch, currentUser, userGroups]);
 
   const handleDeleteGroup = (groupId) => {
     dispatch(deleteGroup(groupId));
   };
 
-  const handleEditGroup = () => {};
-  const handleViewGroup = () => {};
+  const handleEditGroup = (id) => {
+    const filteredData = userGroups?.filter((group) => group.group_id === id);
+    setToEditData(filteredData[0]);
+    setEdit(true);
+  };
+  const handleViewGroup = (id) => {};
 
   return (
     <div className="mt-6 bg-primary p-6 rounded-md">
@@ -55,11 +65,26 @@ const ProfileGroups = () => {
             {/* Menu with delete and edit options */}
             {groupMenuStates[group.group_id] && ( // Check the menu state for the specific group
               <div className="absolute top-6 right-6 bg-primary p-2 rounded-lg shadow-md">
-                <div onClick={() => handleEditGroup(group.group_id)}>Edit</div>
-                <div onClick={() => handleDeleteGroup(group.group_id)}>
+                <div
+                  onClick={() => handleEditGroup(group.group_id)}
+                  style={{ margin: 1, cursor: "pointer" }}
+                >
+                  Edit
+                </div>
+                <div
+                  onClick={() => handleDeleteGroup(group.group_id)}
+                  style={{ margin: 1, cursor: "pointer" }}
+                >
                   Delete
                 </div>
               </div>
+            )}
+            {edit && (
+              <CreateGroupForm
+                edit={edit}
+                close={handleCloseEditGroupForm}
+                group={toEditData}
+              />
             )}
             <h3
               className="text-xl font-semibold text-white"

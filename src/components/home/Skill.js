@@ -31,8 +31,8 @@ function Skill({ skill }) {
       reciever_name: skill.user_name,
       timeStamp: currentDate,
     };
-    dispatch(requestSkill({ userId: currentUser?.uid, skill }));
-    dispatch(createNotify({ notifyData }));
+    // dispatch(requestSkill({ userId: currentUser?.uid, skill }));
+    // dispatch(createNotify({ notifyData }));
   };
 
   const hasRequested = skill?.members_requested?.includes(currentUser?.uid);

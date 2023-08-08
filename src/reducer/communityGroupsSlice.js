@@ -8,6 +8,10 @@ import {
   setDoc,
   arrayUnion,
   collection,
+  where,
+  query,
+  updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 
@@ -57,12 +61,48 @@ export const fetchUserGroups = createAsyncThunk(
   }
 );
 
+// async thunk to update a group
+export const updateGroup = createAsyncThunk(
+  "groups/updateGroup",
+  async ({ groupId, groupName, groupDescription }) => {
+    const groupsQuery = query(
+      collection(db, "community_groups"),
+      where("group_id", "==", groupId)
+    );
+    const querySnapshot = await getDocs(groupsQuery);
+    if (!querySnapshot.empty) {
+      const groupDoc = querySnapshot.docs[0];
+      const groupDocRef = doc(db, "community_groups", groupDoc.id);
+      await updateDoc(groupDocRef, {
+        name: groupName,
+        description: groupDescription,
+      });
+      console.log("sucessfully updated");
+    } else {
+      throw new Error(`Document with groupId ${groupId} not found.`);
+    }
+  }
+);
+
 // Async thunk to delete a group from Firestore
 export const deleteGroup = createAsyncThunk(
   "groups/deleteGroup",
   async (groupId) => {
-    await db.collection("groups").doc(groupId).delete();
-    return groupId;
+    console.log(groupId);
+
+    const groupsQuery = query(
+      collection(db, "community_groups"),
+      where("group_id", "==", groupId)
+    );
+    const querySnapshot = await getDocs(groupsQuery);
+    if (!querySnapshot.empty) {
+      const groupDoc = querySnapshot.docs[0];
+      const groupDocRef = doc(db, "community_groups", groupDoc.id);
+      await deleteDoc(groupDocRef);
+      console.log("successfully deleted");
+    } else {
+      throw new Error(`Document with groupId ${groupId} not found.`);
+    }
   }
 );
 
@@ -90,8 +130,13 @@ const communityGroupsSlice = createSlice({
         state.data = action.payload;
         state.status = "fulfilled";
       })
-      .addCase(deleteGroup.fulfilled, (state, action) => {
-        state.data = action.payload;
+      .addCase(updateGroup.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteGroup.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
       });
   },
 });

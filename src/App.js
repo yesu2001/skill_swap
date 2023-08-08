@@ -22,15 +22,16 @@ import About from "./pages/About";
 import Loader from "./components/Loader";
 import UserProfile from "./pages/UserProfile";
 import AllSkills from "./pages/AllSkills";
+import { useSelector } from "react-redux";
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const userProfile = useSelector((state) => state.userDetails.data);
 
   useEffect(() => {
     // Listen for auth state changes (logged in or logged out)
-
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
@@ -52,7 +53,11 @@ export default function App() {
 
   return (
     <Router>
-      <Layout user={user} isAuthenticated={isAuthenticated}>
+      <Layout
+        user={user}
+        isAuthenticated={isAuthenticated}
+        profile={userProfile}
+      >
         <Routes>
           <Route path="/" exact element={<Home />} />
           <Route path="/about" element={<About />} />

@@ -15,11 +15,9 @@ function ProfileNotifies() {
   const currentuser = auth.currentUser;
 
   useEffect(() => {
-    dispatch(fetchNotifications(currentuser.uid));
+    dispatch(fetchNotifications(currentuser?.uid));
     dispatch(fetchAllNotifications());
   }, [dispatch, allNotifications]);
-
-  console.log(allNotifications);
 
   const handleAcceptRequest = (senderId, requestId) => {
     dispatch(acceptSkillsRequest({ senderId, requestId }));
