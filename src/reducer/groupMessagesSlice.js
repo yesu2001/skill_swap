@@ -80,6 +80,17 @@ const groupMessagesSlice = createSlice({
       .addCase(fetchMessages.rejected, (state, action) => {
         state.status = "Failed";
         state.error = action.error.message;
+      })
+      .addCase(createMessage.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(createMessage.fulfilled, (state, action) => {
+        state.status = "Successfull";
+        state.error = null;
+      })
+      .addCase(createMessage.rejected, (state, action) => {
+        state.status = "loading";
+        state.error = action.error.message;
       });
   },
 });

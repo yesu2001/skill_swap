@@ -52,9 +52,6 @@ const Layout = ({ children, user, profile }) => {
               {/* <HomeRoundedIcon fontSize="24px" mr={2} /> */}
               <Link to="/">Home</Link>
             </li>
-            <li>
-              <Link to="/groups">Groups</Link>
-            </li>
             {!user ? (
               <>
                 <li>
@@ -66,6 +63,12 @@ const Layout = ({ children, user, profile }) => {
               </>
             ) : (
               <>
+                <li>
+                  <Link to="/groups">Groups</Link>
+                </li>
+                <li>
+                  <Link to="/chats">Chats</Link>
+                </li>
                 <button
                   onClick={handleGroupModal}
                   className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-blue-500"

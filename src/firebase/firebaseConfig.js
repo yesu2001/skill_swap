@@ -17,6 +17,7 @@ const firebaseConfig = {
   databaseURL:
     "https://skillswap-efc96-default-rtdb.asia-southeast1.firebasedatabase.app",
 };
+// "https://skillswap-efc96-default-rtdb.asia-southeast1.firebasedatabase.app",
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

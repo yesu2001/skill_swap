@@ -6,6 +6,8 @@ import MultiStepForm from "../components/MultiStepForm/MultiStepForm";
 import SkillFormPopup from "../components/popups/SkillFormPopup";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { fetchUserDetails } from "../reducer/userDetailsSlice";
+import { fetchAllSkills } from "../reducer/AllskillsSlice";
+
 import {
   fetchUserSkills,
   addNewSkill,
@@ -16,6 +18,7 @@ import ProfileDetails from "../components/profile/ProfileDetails";
 import ProfileSkillListing from "../components/profile/ProfileSkillListing";
 import ProfileGroups from "../components/profile/ProfileGroups";
 import ProfileNotifies from "../components/profile/ProfileNotifies";
+import ProfileRequestSkills from "../components/profile/RequestedSkills";
 import generateCustomID from "../helper/generateCustomId";
 
 const UserProfile = ({ user, setShowModal, showModal }) => {
@@ -27,16 +30,29 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
 
   const userDetails = useSelector((state) => state.userDetails.data);
   const userSkills = useSelector((state) => state.userSkills.data);
-
+  const allSkills = useSelector((state) => state.allSkills.data);
   const [isEdit, setIsEdit] = useState(false);
   const filteresSkill = userSkills.filter(
     (skill) => skill.skill_id === skillId
   );
-  console.log();
+  const userOwnSkill = allSkills?.map((skill) =>
+    skill.skill_listings.filter(
+      (skillItem) => skillItem.user_id !== currentUser?.uid
+    )
+  );
+  const skillsRequestedByCurrentUser = userOwnSkill.map((skillItem) =>
+    skillItem.filter((skill) =>
+      skill.members_requested.some((member) => member.userId === currentUserId)
+    )
+  );
+
+  // console.log(skillsRequestedByCurrentUser);
+
   useEffect(() => {
     dispatch(fetchUserDetails(currentUserId));
     dispatch(fetchUserSkills(currentUserId));
-  }, [dispatch, currentUserId, userDetails]);
+    dispatch(fetchAllSkills());
+  }, [dispatch, currentUserId, userDetails, allSkills]);
 
   const handleSaveSkill = (newSkill) => {
     const uid = generateCustomID();
@@ -88,6 +104,9 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
       <div className="max-w-4xl mx-auto">
         <ProfileNotifies />
         <ProfileDetails userDetails={userDetails} setShowModal={setShowModal} />
+        <ProfileRequestSkills
+          skillsRequestedByCurrentUser={skillsRequestedByCurrentUser}
+        />
         <ProfileSkillListing
           handleAddSkill={handleAddSkill}
           userSkills={userSkills}

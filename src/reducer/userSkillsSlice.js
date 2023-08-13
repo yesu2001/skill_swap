@@ -89,7 +89,10 @@ export const requestSkill = createAsyncThunk(
       listing.skill_id === skill.skill_id
         ? {
             ...listing,
-            members_requested: [...listing.members_requested, userId],
+            members_requested: [
+              ...listing.members_requested,
+              { userId, status: null },
+            ],
           }
         : listing
     );

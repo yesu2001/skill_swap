@@ -3,7 +3,6 @@ import Message from "./Message";
 import { chatMessages } from "./styles";
 
 function Channel({ group, messages }) {
-  // console.log(messages);
   return (
     <div className="flex flex-col" style={chatMessages}>
       {/* Header */}

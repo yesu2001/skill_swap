@@ -23,6 +23,8 @@ import Loader from "./components/Loader";
 import UserProfile from "./pages/UserProfile";
 import AllSkills from "./pages/AllSkills";
 import { useSelector } from "react-redux";
+import Chats from "./pages/Chats";
+// import { fetchUserDetails } from "./reducer/userDetailsSlice";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -36,8 +38,6 @@ export default function App() {
       setUser(user);
       setLoading(false);
     });
-
-    // Unsubscribe from the listener when component unmounts
     return () => unsubscribe();
   }, []);
 
@@ -62,6 +62,7 @@ export default function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/groups" element={<Groups />} />
+          <Route path="/chats" element={<Chats />} />
           <Route path="/profile/:id" element={<UserProfile />} />
           <Route path="/all_skills" element={<AllSkills />} />
           <Route

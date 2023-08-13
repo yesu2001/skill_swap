@@ -7,6 +7,7 @@ import communityGroupsReducer from "./communityGroupsSlice";
 import allSkillsReducer from "./AllskillsSlice";
 import groupMessagesReducer from "./groupMessagesSlice";
 import notificationsReducer from "./notificationsSlice";
+import chatMessagesReducer from "./chatMessagesSlice";
 
 const rootReducer = combineReducers({
   auth: userAuthReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   groups: communityGroupsReducer,
   groupMessages: groupMessagesReducer,
   notifications: notificationsReducer,
+  chatMessages: chatMessagesReducer,
 });
 
 export default rootReducer;
