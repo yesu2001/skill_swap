@@ -17,7 +17,7 @@ function Skill({ skill }) {
   const currentUserDetails = useSelector((state) => state.userDetails.data);
   useEffect(() => {
     fetchUserDetails(currentUser?.uid);
-  }, [dispatch]);
+  }, [dispatch, currentUserDetails]);
 
   // console.log(currentUserDetails);
   const isUserIdPresent = skill?.members_requested?.some(
@@ -27,6 +27,11 @@ function Skill({ skill }) {
   const isUserAccepted = skill?.members_requested?.some(
     (obj) => obj.status === "accepted"
   );
+
+  const isUserConnected = currentUserDetails?.users_connected?.includes(
+    skill.user_id
+  );
+
   const handleInterested = () => {
     setShow(true);
   };
@@ -82,12 +87,19 @@ function Skill({ skill }) {
         <p className="text-foreground mt-2">{skill?.user_name}</p>
       </div>
       {isUserIdPresent && isUserAccepted ? (
-        <button
-          className="w-full bg-blue-500  text-white-500 px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-1 focus:ring-blue-400 mt-2"
-          onClick={handleConnect}
-        >
-          Connect
-        </button>
+        isUserConnected ? (
+          <button className="w-full  text-blue-500 px-4 py-2 rounded-md mt-2">
+            {" "}
+            Connected{" "}
+          </button>
+        ) : (
+          <button
+            className="w-full bg-blue-500  text-white-500 px-4 py-2 rounded-md hover:bg-opacity-80 focus:outline-none focus:ring focus:ring-offset-1 focus:ring-blue-400 mt-2"
+            onClick={handleConnect}
+          >
+            Connect
+          </button>
+        )
       ) : isUserIdPresent ? (
         <p className="w-full text-center text-gray-500 px-4 py-2  mt-2">
           Request Sent

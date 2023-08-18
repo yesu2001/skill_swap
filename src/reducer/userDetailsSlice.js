@@ -1,6 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
+
+// Async thunk to fetch all users
+export const fetchAllUsers = createAsyncThunk(
+  "userDetails/fetchAllUsers",
+  async () => {
+    const userDocsRef = getDocs(collection(db, "user_profiles"));
+    const users = (await userDocsRef).docs.map((doc) => doc.data());
+    return users;
+  }
+);
 
 // Async thunk to fetch user details from Firestore
 export const fetchUserDetails = createAsyncThunk(
@@ -31,6 +41,7 @@ export const addUserDetails = createAsyncThunk(
 const userDetailsSlice = createSlice({
   name: "userDetails",
   initialState: {
+    usersData: [],
     data: null,
     isLoading: false,
     error: null,
@@ -38,6 +49,10 @@ const userDetailsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.usersData = action.payload;
+      })
       .addCase(fetchUserDetails.pending, (state) => {
         state.isLoading = true;
         state.error = null;

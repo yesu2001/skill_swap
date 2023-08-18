@@ -11,11 +11,16 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import CreateGroupForm from "./popups/CreateGroupForm";
 import { logoutUser } from "../reducer/userAuthSlice";
 import defaultPic from "../assets/default_pic.jpg";
+import ProfileNotifies from "./profile/ProfileNotifies";
 
 const Layout = ({ children, user, profile }) => {
   const [openGroupModal, SetOpenGroupModal] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
   const dispatch = useDispatch();
+
+  const handleOpenNotify = (event) => setAnchorEl2(event.currentTarget);
+  const handleCloseNotify = () => setAnchorEl2(null);
 
   const handleGroupModal = () => SetOpenGroupModal(true);
   const handleCloseGroupModal = () => SetOpenGroupModal(false);
@@ -38,7 +43,9 @@ const Layout = ({ children, user, profile }) => {
   };
 
   const open = Boolean(anchorEl);
+  const openNotify = Boolean(anchorEl2);
   const id = open ? "simple-popover" : undefined;
+
   return (
     <div className="dark:bg-background dark:text-foreground transition-colors">
       {/* Header/Navbar */}
@@ -82,7 +89,30 @@ const Layout = ({ children, user, profile }) => {
                   />
                 )}
                 <div className="relative">
-                  <NotificationsIcon />
+                  <NotificationsIcon
+                    onClick={handleOpenNotify}
+                    sx={{ cursor: "pointer" }}
+                  />
+                  <Popover
+                    id={id}
+                    open={openNotify}
+                    anchorEl={anchorEl2}
+                    onClose={handleCloseNotify}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    PaperProps={{
+                      className: "bg-white dark:bg-gray-700 rounded shadow-md",
+                    }}
+                    sx={{ mt: 1 }}
+                  >
+                    <ProfileNotifies />
+                  </Popover>
                 </div>
                 {/* User Profile Picture / Avatar */}
                 <div className="relative">
@@ -113,8 +143,8 @@ const Layout = ({ children, user, profile }) => {
                   >
                     <ul className="space-y-2 p-3">
                       <li className="flex items-center justify-between text-white">
-                        <PersonRoundedIcon />
                         <Link to="/profile" className=" block py-2">
+                          <PersonRoundedIcon />
                           Profile
                         </Link>
                       </li>

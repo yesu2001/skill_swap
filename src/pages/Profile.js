@@ -102,7 +102,6 @@ const UserProfile = ({ user, setShowModal, showModal }) => {
   return (
     <div className="min-h-screen text-white px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <ProfileNotifies />
         <ProfileDetails userDetails={userDetails} setShowModal={setShowModal} />
         <ProfileRequestSkills
           skillsRequestedByCurrentUser={skillsRequestedByCurrentUser}

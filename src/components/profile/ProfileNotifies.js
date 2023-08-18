@@ -33,8 +33,7 @@ function ProfileNotifies() {
 
   //   console.log(allNotifications);
   return (
-    <div className="mb-4 p-6 bg-primary rounded-md">
-      <h2 className="text-xl font-bold mb-4">Incoming Skill Requests</h2>
+    <div className="w-[300px] h-[500px] overflow-y-scroll mb-4 p-6 bg-primary rounded-md text-white">
       {!skillRequests?.length && !skillStatus?.length ? (
         <h2 className="text-xl font-bold mb-4">No notifications</h2>
       ) : (

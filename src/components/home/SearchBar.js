@@ -32,7 +32,7 @@ function SearchBar() {
       );
 
       // console.log(userProfileQuery);
-      console.log(userSkillsQuery);
+      // console.log(userSkillsQuery);
       // Execute the queries in parallel using Promise.all
       const [userProfileSnapshot, userSkillsSnapshot] = await Promise.all([
         getDocs(userProfileQuery),

@@ -57,6 +57,20 @@ export const createChat = createAsyncThunk(
         });
         console.log("new chat connection successfully");
       }
+      const userDetailsRef = doc(db, "user_profiles", chatData.user2_id);
+      const userDetailsSnapshot = await getDoc(userDetailsRef);
+      const userData = userDetailsSnapshot.data();
+      const updatedData = {
+        ...userData,
+        users_connected: [...userData.users_connected, chatData.user1_id],
+      };
+      await updateDoc(userDetailsRef, updatedData);
+      console.log("added user1 to the userdetails");
+      // if(userDetailsSnapshot.exists()) {
+
+      // }else {
+      //   console.log("user does not exist");
+      // }
     } catch (err) {
       console.log(err.message);
       return err;

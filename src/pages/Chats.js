@@ -21,10 +21,6 @@ const ChatPage = () => {
   const chatMessages = useSelector((state) => state.chatMessages.chatMessages);
   const messageRef = useRef(null);
 
-  //   console.log(allChats.map((chat) => chat.map((item) => item.chat_id)));
-
-  console.log(chatMessages);
-
   useEffect(() => {
     dispatch(fetchAllChats(current_User?.uid));
   }, [dispatch, allChats]);

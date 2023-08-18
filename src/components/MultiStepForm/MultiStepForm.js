@@ -41,6 +41,7 @@ const MultiStepForm = ({ setShowModal, userDetails }) => {
     reviews_received: reviews_received || [],
     ratings: ratings || 0,
     groups: groups || [],
+    users_connected: [],
   });
 
   const handleChange = (field) => (e) => {
